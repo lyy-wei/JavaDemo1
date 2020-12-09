@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.soft.mapper.UserMapper">
+
+    <insert id="addUser" parameterType="UserInfo">
+<!--        <selectKey keyProperty="id" order="BEFORE" resultType="java.lang.Integer">-->
+<!--            select user_seq.nextval from dual-->
+<!--        </selectKey>-->
+        insert into user(username, password, sex, education, work, phone, email) values (#{userName}, #{password}, #{sex}, #{education}, #{work}, #{phone}, #{email})
+    </insert>
+
+    <update id="updateUser" parameterType="UserInfo">
+        update user set username = #{userName}, password = #{password}, sex = #{sex}, education = #{education}, work = #{work}, phone = #{phone}, email = #{email} where id = #{id}
+    </update>
+
+    <delete id="deleteUserById" parameterType="UserInfo">
+        delete from user where id = #{id}
+    </delete>
+
+    <select id="findAll2" resultType="UserInfo">
+        select * from user
+    </select>
+
+    <select id="findAll" resultType="UserInfo" parameterType="UserInfo">
+        select * from user
+        <if test="id != 0">
+            <where>
+                id = #{id}
+            </where>
+        </if>
+<!--        <choose>-->
+<!--            <when test="userName != null">-->
+<!--                and username like #{userName}-->
+<!--            </when>-->
+<!--            <otherwise>-->
+<!--                and id = 1-->
+<!--            </otherwise>-->
+<!--        </choose>-->
+    </select>
+
+    <select id="findIn" resultType="UserInfo" parameterType="UserInfo">
+        select * from user where id in
+        <foreach collection="list" item="i" open="(" separator="," close=")">
+            #{i}
+        </foreach>
+    </select>
+</mapper>

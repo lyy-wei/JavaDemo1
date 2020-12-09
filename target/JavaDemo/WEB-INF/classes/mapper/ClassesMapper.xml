@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.soft.mapper.ClassesMapper">
+
+    <select id="findAll" resultType="Classes" resultMap="users">
+        select * from classes
+    </select>
+
+    <select id="selectUsers" parameterType="java.lang.Integer" resultType="UserInfo">
+        select * from user where classid = #{id}
+    </select>
+
+    <resultMap id="users" type="Classes">
+<!--        <id column="id" property="id"></id>-->
+<!--        <result column="name" property="name"></result>-->
+        <collection property="users" column="id" ofType="UserInfo" select="selectUsers">
+
+        </collection>
+    </resultMap>
+
+    <select id="findAllUser" resultType="UserInfo" resultMap="classMap">
+        select * from user
+    </select>
+
+    <select id="selectClasses" parameterType="java.lang.Integer" resultType="Classes">
+        select * from classes where id = #{classId}
+    </select>
+
+    <resultMap id="classMap" type="UserInfo">
+        <association property="classesInfo" column="classId" javaType="Classes" select="selectClasses">
+
+        </association>
+    </resultMap>
+
+
+    <select id="findUser" resultMap="ontomore">
+        select t2.*,t1.id classid,t1.name from classes t1 left join user t2 on t1.id = t2.classid
+    </select>
+
+    <resultMap id="ontomore" type="Classes">
+        <id column="classid" property="id"></id>
+        <result column="name" property="name"></result>
+        <collection property="users" ofType="UserInfo">
+            <id column="id" property="id"></id>
+            <result column="username" property="userName"></result>
+            <result column="password" property="password"></result>
+            <result property="sex" column="sex"></result>
+            <result column="education" property="education"></result>
+            <result column="work" property="work"></result>
+            <result column="phone" property="phone"></result>
+            <result column="email" property="email"></result>
+            <result column="classid" property="classId"></result>
+        </collection>
+    </resultMap>
+
+    <select id="findAllUser2" resultType="UserInfo" resultMap="mortoone">
+        select t2.*,t1.id classid,t1.name from user t2 left join classes t1 on t2.classid = t1.id
+    </select>
+
+    <resultMap id="mortoone" type="UserInfo">
+        <id column="id" property="id"></id>
+        <result column="username" property="userName"></result>
+        <result column="password" property="password"></result>
+        <result property="sex" column="sex"></result>
+        <result column="education" property="education"></result>
+        <result column="work" property="work"></result>
+        <result column="phone" property="phone"></result>
+        <result column="email" property="email"></result>
+        <result column="classid" property="classId"></result>
+        <association property="classesInfo" javaType="Classes">
+            <id column="classid" property="id"></id>
+            <result column="name" property="name"></result>
+        </association>
+    </resultMap>
+</mapper>

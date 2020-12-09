@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+    <table>
+        <property name="name" column="name" order="1"/>
+        <property name="pwd" column="pwd" order="2"/>
+        <property name="sex" column="sex" order="3"/>
+    </table>
+</root>
